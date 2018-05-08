@@ -7,6 +7,7 @@ namespace agate_pris {
 namespace aplas {
 
 using vector_2 = boost::qvm::vec<float, 2>;
+using vector_3 = boost::qvm::vec<float, 3>;
 
 }
 }
