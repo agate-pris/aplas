@@ -10,6 +10,8 @@ using vector_2 = boost::qvm::vec<float, 2>;
 using vector_3 = boost::qvm::vec<float, 3>;
 using vector_4 = boost::qvm::vec<float, 4>;
 
+using vector_2_int = boost::qvm::vec<int, 2>;
+
 }
 }
 
