@@ -243,6 +243,17 @@ namespace aplas {
 
             set_local_position(v);
         }
+        inline void set_rotation(quaternion_type const& q)
+        {
+            if (auto parent = get_const_parent()) {
+                set_local_rotation(
+                    q
+                    * boost::qvm::inverse(parent->get_rotation()));
+                return;
+            }
+
+            set_local_rotation(q);
+        }
     };
 }
 }
