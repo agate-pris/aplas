@@ -1,6 +1,7 @@
 #ifndef AGATE_PRIS_APLAS_TRANSFORM_HPP
 #define AGATE_PRIS_APLAS_TRANSFORM_HPP
 
+#include <boost/qvm/mat.hpp>
 #include <boost/qvm/quat.hpp>
 #include <boost/qvm/quat_operations.hpp>
 #include <boost/qvm/swizzle3.hpp>
@@ -19,6 +20,7 @@ namespace aplas {
         typedef Scalar scalar_type;
         typedef boost::qvm::vec<scalar_type, 3> vector_3_type;
         typedef boost::qvm::quat<scalar_type> quaternion_type;
+        typedef boost::qvm::mat<scalar_type, 4, 4> matrix_4_x_4_type;
 
     private:
         parent_type m_parent;
