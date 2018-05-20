@@ -1,6 +1,7 @@
 #ifndef AGATE_PRIS_APLAS_TRANSFORM_HPP
 #define AGATE_PRIS_APLAS_TRANSFORM_HPP
 
+#include <boost/qvm/map_mat_vec.hpp>
 #include <boost/qvm/map_vec_mat.hpp>
 #include <boost/qvm/mat.hpp>
 #include <boost/qvm/mat_operations4.hpp>
@@ -226,6 +227,10 @@ namespace aplas {
                 * boost::qvm::convert_to<matrix_3_x_3_type>(r);
 
             return m;
+        }
+        inline vector_3_type get_lossy_scale() const
+        {
+            return boost::qvm::diag(get_scale());
         }
     };
 }
