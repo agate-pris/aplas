@@ -232,6 +232,17 @@ namespace aplas {
         {
             return boost::qvm::diag(get_scale());
         }
+        inline void set_position(vector_3_type const& v)
+        {
+            if (auto parent = get_const_parent()) {
+                set_local_position(boost::qvm::XYZ(
+                    parent->get_world_to_local_matrix()
+                    * boost::qvm::XYZ1(get_const_local_position()));
+                return;
+            }
+
+            set_local_position(v);
+        }
     };
 }
 }
