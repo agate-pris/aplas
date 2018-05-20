@@ -117,6 +117,16 @@ namespace aplas {
         {
             return get_mutable_local_scale();
         }
+        inline vector_3_type get_inversed_local_scale() const
+        {
+            typedef boost::qvm::vec_traits<vector_3_type> vec_traits;
+            auto const& v = get_const_local_scale();
+            return vector_3_type{
+                1 / vec_traits::read_element<0>(v),
+                1 / vec_traits::read_element<1>(v),
+                1 / vec_traits::read_element<2>(v)
+            };
+        }
         inline void set_local_scale(vector_3 const& v)
         {
             get_mutable_local_scale() = v;
