@@ -24,6 +24,7 @@ namespace aplas {
         typedef Scalar scalar_type;
         typedef boost::qvm::vec<scalar_type, 3> vector_3_type;
         typedef boost::qvm::quat<scalar_type> quaternion_type;
+        typedef boost::qvm::mat<scalar_type, 3, 3> matrix_3_x_3_type;
         typedef boost::qvm::mat<scalar_type, 4, 4> matrix_4_x_4_type;
 
     private:
