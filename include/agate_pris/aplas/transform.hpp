@@ -117,6 +117,16 @@ namespace aplas {
         {
             return get_mutable_local_scale();
         }
+        inline vector_3_type get_inversed_local_scale() const
+        {
+            typedef boost::qvm::vec_traits<vector_3_type> vec_traits;
+            auto const& v = get_const_local_scale();
+            return vector_3_type{
+                1 / vec_traits::read_element<0>(v),
+                1 / vec_traits::read_element<1>(v),
+                1 / vec_traits::read_element<2>(v)
+            };
+        }
         inline void set_local_scale(vector_3 const& v)
         {
             get_mutable_local_scale() = v;
@@ -134,6 +144,23 @@ namespace aplas {
                     * boost::qvm::convert_to<matrix_4_x_4_type>(t->get_const_local_rotation())
                     * boost::qvm::diag_mat(boost::qvm::XYZ1(t->get_const_local_scale()))
                     * m;
+            }
+
+            return m;
+        }
+        inline matrix_4_x_4_type get_world_to_local_matrix()
+        {
+            auto m
+                = boost::qvm::diag_mat(boost::qvm::XYZ1(get_inversed_local_scale()))
+                * boost::qvm::convert_to<matrix_4_x_4_type>(boost::qvm::inverse(get_const_local_rotation()))
+                * boost::qvm::translation_mat(-get_const_local_position());
+
+            for (auto t = get_const_parent(); t; t = t->get_const_parent()) {
+                m
+                    = m
+                    * boost::qvm::diag_mat(boost::qvm::XYZ1(t->get_inversed_local_scale()))
+                    * boost::qvm::convert_to<matrix_4_x_4_type>(boost::qvm::inverse(t->get_const_local_rotation()))
+                    * boost::qvm::translation_mat(-t->get_const_local_position());
             }
 
             return m;
