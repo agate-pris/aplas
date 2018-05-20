@@ -9,6 +9,7 @@
 #include <boost/qvm/swizzle3.hpp>
 #include <boost/qvm/swizzle4.hpp>
 #include <boost/qvm/vec.hpp>
+#include <boost/qvm/vec_mat_operations4.hpp>
 #include <boost/qvm/vec_operations.hpp>
 
 #include <utility>
@@ -164,6 +165,15 @@ namespace aplas {
             }
 
             return m;
+        }
+        inline vector_3_type get_position() const
+        {
+            auto p = get_const_parent();
+            if (!p)
+                return get_const_local_position();
+            return boost::qvm::XYZ(
+                p->get_local_to_world_matrix()
+                * boost::qvm::XYZ1(get_const_local_position()));
         }
     };
 }
