@@ -205,6 +205,28 @@ namespace aplas {
 
             return m;
         }
+        inline matrix_3_x_3_type get_inversed_scale() const
+        {
+            auto r
+                = get_const_local_rotation();
+            auto m
+                = boost::qvm::diag_mat(get_inversed_scale())
+                * boost::qvm::convert_to<matrix_3_x_3_type>(boost::qvm::inverse(get_const_local_rotation()));
+
+            for (auto t = get_const_parent(); t; t = t->get_const_parent()) {
+                r *= t->get_const_local_rotation();
+                m
+                    = m
+                    * boost::qvm::diag_mat(get_inversed_scale())
+                    * boost::qvm::convert_to<matrix_3_x_3_type>(boost::qvm::inverse(get_const_local_rotation()));
+            }
+
+            m
+                = m
+                * boost::qvm::convert_to<matrix_3_x_3_type>(r);
+
+            return m;
+        }
     };
 }
 }
