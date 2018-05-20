@@ -148,6 +148,23 @@ namespace aplas {
 
             return m;
         }
+        inline matrix_4_x_4_type get_world_to_local_matrix()
+        {
+            auto m
+                = boost::qvm::diag_mat(boost::qvm::XYZ1(get_inversed_local_scale()))
+                * boost::qvm::convert_to<matrix_4_x_4_type>(boost::qvm::inverse(get_const_local_rotation()))
+                * boost::qvm::translation_mat(-get_const_local_position());
+
+            for (auto t = get_const_parent(); t; t = t->get_const_parent()) {
+                m
+                    = m
+                    * boost::qvm::diag_mat(boost::qvm::XYZ1(t->get_inversed_local_scale()))
+                    * boost::qvm::convert_to<matrix_4_x_4_type>(boost::qvm::inverse(t->get_const_local_rotation()))
+                    * boost::qvm::translation_mat(-t->get_const_local_position());
+            }
+
+            return m;
+        }
     };
 }
 }
