@@ -254,6 +254,21 @@ namespace aplas {
 
             set_local_rotation(q);
         }
+        inline void translate(vector_3_type const& translation)
+        {
+            if (auto const parent = get_const_parent()) {
+                get_mutable_local_position()
+                    += boost::qvm::XYZ(
+                        parent->get_inversed_scale()
+                        * boost::qvm::convert_to<matrix_4_x_4_type>(get_const_local_rotation())
+                        * boost::qvm::XYZ1(translation));
+                return;
+            }
+
+            get_mutable_local_position()
+                += get_const_local_rotation()
+                * translation;
+        }
     };
 }
 }
