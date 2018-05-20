@@ -7,6 +7,8 @@
 #include <boost/qvm/vec.hpp>
 #include <boost/qvm/vec_operations.hpp>
 
+#include <utility>
+
 namespace agate_pris {
 namespace aplas {
     template <template <typename> class Parent, typename Scalar>
@@ -19,6 +21,7 @@ namespace aplas {
         typedef boost::qvm::quat<scalar_type> quaternion_type;
 
     private:
+        parent_type m_parent;
         vector_3_type m_local_position;
         quaternion_type m_local_rotation;
         vector_3_type m_local_scale;
@@ -29,6 +32,29 @@ namespace aplas {
             , m_local_rotation(boost::qvm::identity_quat<scalar_type>())
             , m_local_scale(boost::qvm::scalar_cast<scalar_type>(boost::qvm::_111()))
         {
+        }
+        inline transform(parent_type parent)
+            : m_parent(std::move(parent))
+            , m_local_position(boost::qvm::zero_vec<scalar_type, 3>())
+            , m_local_rotation(boost::qvm::identity_quat<scalar_type>())
+            , m_local_scale(boost::qvm::scalar_cast<scalar_type>(boost::qvm::_111()))
+        {
+        }
+        inline const_parent_type get_const_parent() const
+        {
+            return m_parent;
+        }
+        inline const_parent_type get_parent() const
+        {
+            return get_const_parent();
+        }
+        inline parent_type get_mutable_parent()
+        {
+            return m_parent;
+        }
+        inline parent_type get_parent()
+        {
+            return get_mutable_parent();
         }
         inline vector_3_type const& get_const_local_position() const
         {
