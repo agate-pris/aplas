@@ -175,6 +175,13 @@ namespace aplas {
                 p->get_local_to_world_matrix()
                 * boost::qvm::XYZ1(get_const_local_position()));
         }
+        inline quaternion_type get_rotation() const
+        {
+            auto r = get_const_local_rotation();
+            for (auto t = get_const_parent(); t; t = t->get_const_parent())
+                r *= t->get_const_local_rotation();
+            return r;
+        }
     };
 }
 }
