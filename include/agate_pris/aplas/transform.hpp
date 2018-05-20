@@ -9,9 +9,10 @@
 
 namespace agate_pris {
 namespace aplas {
-    template <typename Scalar>
+    template <template <typename> class Parent, typename Scalar>
     class transform {
     public:
+        typedef Parent<transform> parent_type;
         typedef Scalar scalar_type;
         typedef boost::qvm::vec<scalar_type, 3> vector_3_type;
         typedef boost::qvm::quat<scalar_type> quaternion_type;
