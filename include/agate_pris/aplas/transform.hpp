@@ -3,12 +3,11 @@
 
 namespace agate_pris {
 namespace aplas {
-
-class transform
-{
-};
-
-}
+    template <typename Scalar>
+    class transform {
+    public:
+        typedef Scalar scalar_type;
+    };
 }
 
 #endif
