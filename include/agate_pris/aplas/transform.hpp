@@ -1,6 +1,7 @@
 #ifndef AGATE_PRIS_APLAS_TRANSFORM_HPP
 #define AGATE_PRIS_APLAS_TRANSFORM_HPP
 
+#include <boost/qvm/map_mat_vec.hpp>
 #include <boost/qvm/map_vec_mat.hpp>
 #include <boost/qvm/mat.hpp>
 #include <boost/qvm/mat_operations4.hpp>
@@ -24,6 +25,7 @@ namespace aplas {
         typedef Scalar scalar_type;
         typedef boost::qvm::vec<scalar_type, 3> vector_3_type;
         typedef boost::qvm::quat<scalar_type> quaternion_type;
+        typedef boost::qvm::mat<scalar_type, 3, 3> matrix_3_x_3_type;
         typedef boost::qvm::mat<scalar_type, 4, 4> matrix_4_x_4_type;
 
     private:
@@ -181,6 +183,54 @@ namespace aplas {
             for (auto t = get_const_parent(); t; t = t->get_const_parent())
                 r *= t->get_const_local_rotation();
             return r;
+        }
+        inline matrix_3_x_3_type get_scale() const
+        {
+            auto r
+                = get_const_local_rotation();
+            auto m
+                = boost::qvm::convert_to<matrix_3_x_3_type>(get_const_local_rotation())
+                * boost::qvm::diag_mat(get_const_local_scale());
+
+            for (auto t = get_const_parent(); t; t = t->get_const_parent()) {
+                r *= t->get_const_local_rotation();
+                m
+                    = boost::qvm::convert_to<matrix_3_x_3_type>(get_const_local_rotation())
+                    * boost::qvm::diag_mat(get_const_local_scale())
+                    * m;
+            }
+
+            m
+                = boost::qvm::convert_to<matrix_3_x_3_type>(boost::qvm::inverse(r))
+                * m;
+
+            return m;
+        }
+        inline matrix_3_x_3_type get_inversed_scale() const
+        {
+            auto r
+                = get_const_local_rotation();
+            auto m
+                = boost::qvm::diag_mat(get_inversed_scale())
+                * boost::qvm::convert_to<matrix_3_x_3_type>(boost::qvm::inverse(get_const_local_rotation()));
+
+            for (auto t = get_const_parent(); t; t = t->get_const_parent()) {
+                r *= t->get_const_local_rotation();
+                m
+                    = m
+                    * boost::qvm::diag_mat(get_inversed_scale())
+                    * boost::qvm::convert_to<matrix_3_x_3_type>(boost::qvm::inverse(get_const_local_rotation()));
+            }
+
+            m
+                = m
+                * boost::qvm::convert_to<matrix_3_x_3_type>(r);
+
+            return m;
+        }
+        inline vector_3_type get_lossy_scale() const
+        {
+            return boost::qvm::diag(get_scale());
         }
     };
 }
