@@ -269,6 +269,12 @@ namespace aplas {
                 += get_const_local_rotation()
                 * translation;
         }
+        inline void rotate(vector3_type const& axis, scalar_type const angle)
+        {
+            set_local_rotation(
+                boost::qvm::rot_quat(axis, angle)
+                * get_const_local_rotation());
+        }
     };
 }
 }
