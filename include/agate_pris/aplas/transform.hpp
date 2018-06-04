@@ -195,8 +195,8 @@ namespace aplas {
             for (auto t = get_const_parent(); t; t = t->get_const_parent()) {
                 r *= t->get_const_local_rotation();
                 m
-                    = boost::qvm::convert_to<matrix_3_x_3_type>(get_const_local_rotation())
-                    * boost::qvm::diag_mat(get_const_local_scale())
+                    = boost::qvm::convert_to<matrix_3_x_3_type>(t->get_const_local_rotation())
+                    * boost::qvm::diag_mat(t->get_const_local_scale())
                     * m;
             }
 
