@@ -218,8 +218,8 @@ namespace aplas {
                 r *= t->get_const_local_rotation();
                 m
                     = m
-                    * boost::qvm::diag_mat(get_inversed_scale())
-                    * boost::qvm::convert_to<matrix_3_x_3_type>(boost::qvm::inverse(get_const_local_rotation()));
+                    * boost::qvm::diag_mat(t->get_inversed_scale())
+                    * boost::qvm::convert_to<matrix_3_x_3_type>(boost::qvm::inverse(t->get_const_local_rotation()));
             }
 
             m
